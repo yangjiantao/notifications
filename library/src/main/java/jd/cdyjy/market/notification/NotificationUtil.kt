@@ -18,8 +18,10 @@ package jd.cdyjy.market.notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 
 /**
@@ -86,5 +88,12 @@ object NotificationUtil {
         val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
         intent!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
+    /**
+     * @param rawResId 音频资源id
+     */
+    fun getSoundUri(context: Context, rawResId: Int): Uri {
+        return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.packageName + "/" + rawResId)
     }
 }

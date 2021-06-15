@@ -13,6 +13,10 @@ object Notifications {
         this.notifier = notifier
     }
 
+    fun setRule(rule: BaseNotifyRule) {
+        this.notifier.setRule(rule)
+    }
+
     fun notify(context: Context, content: NotificationContent): Boolean {
         return notifier.notify(context, content)
     }

@@ -1,0 +1,27 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/messages_header">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="notify_all"
+            app:title="通知提醒" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:dependency="notify_all"
+            app:key="sound"
+            app:summaryOff="off"
+            app:summaryOn="on"
+            app:title="提示音" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:dependency="notify_all"
+            app:key="vibrate"
+            app:summaryOff="off"
+            app:summaryOn="on"
+            app:title="振动" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

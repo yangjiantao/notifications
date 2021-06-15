@@ -1,11 +1,16 @@
 package jd.cdyjy.market.notification
 
 import android.app.Notification
+import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.ContentResolver
 import android.content.Context
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+
 
 /**
  * 简单的Notifier实现类
@@ -34,8 +39,20 @@ class SimpleNotifier : BaseNotifier() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun createNotificationChannel(context: Context, content: NotificationContent): String? {
-        val config = NotificationChannelConfig("xxxNid", "聊天消息", "测试", NotificationManager.IMPORTANCE_HIGH)
+    override fun createNotificationChannel(
+        context: Context,
+        content: NotificationContent
+    ): String? {
+        val config = NotificationChannelConfig(
+            "xxx23",
+            "聊天消息3",
+            "测试",
+            NotificationManager.IMPORTANCE_HIGH
+        )
         return NotificationUtil.createNotificationChannel(context, config)
+    }
+
+    override fun getCustomSoundUri(context: Context): Uri {
+        return NotificationUtil.getSoundUri(context, R.raw.dongdong)
     }
 }

@@ -1,7 +1,10 @@
 package jd.cdyjy.market.notification
 
+import android.annotation.SuppressLint
 import android.app.Notification
+import android.app.NotificationChannel
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -36,7 +39,7 @@ abstract class BaseNotifier {
             return false
         }
         if (!notifyRule.enableAll()) {
-            Log.d(TAG, "notifyRule.enable is false.")
+            Log.i(TAG, "notifyRule.enable is false.")
             return false
         }
 
@@ -45,17 +48,10 @@ abstract class BaseNotifier {
             generateNotification(context, content)
         }
 
-        if (notifyRule.soundEnable()) {
-            // 允许播放提示音
-        }
-
-        if (notifyRule.vibrateEnable()) {
-            // 允许振动
-        }
-
         return true
     }
 
+    @SuppressLint("NewApi")
     private fun generateNotification(context: Context, content: NotificationContent) {
         // 1. Create/Retrieve Notification Channel for O and beyond devices (26+).
         // NotificationChannels are required for Notifications on O (API 26) and above.
@@ -72,8 +68,53 @@ abstract class BaseNotifier {
 
         val notification = createNotificationInstance(context, builder, content)
 
+        // 检查提示音和振动配置
+        checkSoundAndVibrate(context, notification)
+
         // 3. notify
         notificationManager!!.notify(generateNotifyId(content), notification)
+    }
+
+    /**
+     * Android 8.0以下系统可以动态控制通知的声音和振动，8.0及以上，创建通知渠道后，就无法更改通知行为，此时用户拥有完全控制权。
+     */
+    private fun checkSoundAndVibrate(
+        context: Context,
+        notification: Notification
+    ) {
+        // check sound uri
+        if (notifyRule.soundEnable()) {
+            val customSoundUri = getCustomSoundUri(context)
+            if (customSoundUri != null) {
+                notification.sound = customSoundUri
+                notification.defaults =
+                    notification.defaults and NotificationCompat.DEFAULT_SOUND.inv()
+            } else {
+                // 防止配置错误导致没有提示音
+                notification.defaults =
+                    notification.defaults or NotificationCompat.DEFAULT_SOUND
+            }
+        } else {
+            notification.sound = null
+            notification.defaults =
+                notification.defaults and NotificationCompat.DEFAULT_SOUND.inv()
+        }
+
+        // check vibrate
+        if (notifyRule.vibrateEnable()) {
+            notification.defaults =
+                notification.defaults or NotificationCompat.DEFAULT_VIBRATE
+        } else {
+            notification.defaults =
+                notification.defaults and NotificationCompat.DEFAULT_VIBRATE.inv()
+        }
+    }
+
+    /**
+     * 提示音资源
+     */
+    open fun getCustomSoundUri(context: Context): Uri? {
+        return null
     }
 
     /**
@@ -89,9 +130,13 @@ abstract class BaseNotifier {
      * 根据通知数据data，创建/获取通知渠道ID
      */
     @RequiresApi(Build.VERSION_CODES.O)
-    abstract fun createNotificationChannel(context: Context, content: NotificationContent): String?
+    abstract fun createNotificationChannel(
+        context: Context,
+        content: NotificationContent
+    ): String?
 
-    fun setRule(rule: BaseNotifyRule) {
+
+    internal fun setRule(rule: BaseNotifyRule) {
         notifyRule = rule
     }
 
