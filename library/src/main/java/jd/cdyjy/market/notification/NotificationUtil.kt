@@ -34,7 +34,7 @@ object NotificationUtil {
      */
     fun createNotificationChannel(
         context: Context, channelConfig: NotificationChannelConfig
-    ): String? {
+    ): NotificationChannel? {
 
         // NotificationChannels are required for Notifications on O (API 26) and above.
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -62,7 +62,7 @@ object NotificationUtil {
             val notificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(notificationChannel)
-            channelId
+            notificationChannel
         } else {
             // Returns null for pre-O (26) devices.
             null

@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Notifications.setRule(TestRule())
+        Notifications.setNotifier(SimpleNotifier(), TestRule())
 
         findViewById<View>(R.id.button).setOnClickListener {
             Notifications.notify(this, NotificationContent("xxx", "yyy", mapOf()))

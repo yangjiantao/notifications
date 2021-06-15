@@ -7,13 +7,10 @@ import android.content.Context
  */
 object Notifications {
 
-    private var notifier: BaseNotifier = SimpleNotifier()
+    private var notifier: BaseNotifier = IllegalNotifier()
 
-    fun setNotifier(notifier: BaseNotifier) {
+    fun setNotifier(notifier: BaseNotifier, rule: BaseNotifyRule = BaseNotifyRule()) {
         this.notifier = notifier
-    }
-
-    fun setRule(rule: BaseNotifyRule) {
         this.notifier.setRule(rule)
     }
 

@@ -55,15 +55,15 @@ abstract class BaseNotifier {
     private fun generateNotification(context: Context, content: NotificationContent) {
         // 1. Create/Retrieve Notification Channel for O and beyond devices (26+).
         // NotificationChannels are required for Notifications on O (API 26) and above.
-        val channelId =
+        val channel =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 createNotificationChannel(context, content)
             } else null
 
         // 2. build a notification
         val builder: NotificationCompat.Builder =
-            if (channelId != null) {
-                NotificationCompat.Builder(context, channelId)
+            if (channel != null) {
+                NotificationCompat.Builder(context, channel.id)
             } else NotificationCompat.Builder(context)
 
         val notification = createNotificationInstance(context, builder, content)
@@ -133,7 +133,7 @@ abstract class BaseNotifier {
     abstract fun createNotificationChannel(
         context: Context,
         content: NotificationContent
-    ): String?
+    ): NotificationChannel?
 
 
     internal fun setRule(rule: BaseNotifyRule) {
