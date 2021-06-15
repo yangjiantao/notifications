@@ -38,10 +38,10 @@ abstract class BaseNotifier {
             Log.w(TAG, "You need to enable notifications for this app.")
             return false
         }
-        if (!notifyRule.enableAll()) {
-            Log.i(TAG, "notifyRule.enable is false.")
-            return false
-        }
+//        if (!notifyRule.enableAll()) {
+//            Log.i(TAG, "notifyRule.enable is false.")
+//            return false
+//        }
 
         if (notifyRule.notifyEnable()) {
             // 允许发送通知
@@ -93,7 +93,7 @@ abstract class BaseNotifier {
         notification: Notification
     ) {
         // check sound uri
-        if (notifyRule.soundEnable()) {
+        if (notifyRule.notifySoundEnable()) {
             val customSoundUri = getCustomSoundUri(context)
             if (customSoundUri != null) {
                 notification.sound = customSoundUri
@@ -111,7 +111,7 @@ abstract class BaseNotifier {
         }
 
         // check vibrate
-        if (notifyRule.vibrateEnable()) {
+        if (notifyRule.notifyVibrateEnable()) {
             notification.defaults =
                 notification.defaults or NotificationCompat.DEFAULT_VIBRATE
         } else {

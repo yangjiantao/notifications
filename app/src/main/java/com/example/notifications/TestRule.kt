@@ -10,11 +10,11 @@ class TestRule : BaseNotifyRule(){
         return SettingsActivity.preferenceConfig.notifyAll
     }
 
-    override fun vibrateEnable(): Boolean {
+    override fun notifyVibrateEnable(): Boolean {
         return SettingsActivity.preferenceConfig.vibrateEnable
     }
 
-    override fun soundEnable(): Boolean {
+    override fun notifySoundEnable(): Boolean {
         return SettingsActivity.preferenceConfig.soundEnable
     }
 }

@@ -2,13 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jd.cdyjy.market.notification">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <!--    应用角标权限-->
     <!-- 华为 -->
     <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 三星 -->
-    <!--<uses-permission android:name="com.sec.android.provider.badge.permission.READ"/>-->
-    <!--<uses-permission android:name="com.sec.android.provider.badge.permission.WRITE"/>-->
+    <uses-permission android:name="com.sec.android.provider.badge.permission.READ"/>
+    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE"/>
     <!-- OPPO -->
     <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS" />
@@ -17,5 +19,9 @@
     <!-- HTC -->
     <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT" />
+    <!-- 索尼角标 -->
+    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE" />
+    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" />
+    <uses-permission android:name="com.sonyericsson.home.action.UPDATE_BADGE" />
     <!--    应用角标权限-->
 </manifest>

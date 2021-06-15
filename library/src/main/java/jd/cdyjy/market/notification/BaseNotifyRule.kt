@@ -15,23 +15,23 @@ open class BaseNotifyRule {
     }
 
     /**
-     * 通知提醒
+     * 通知提醒开关
      */
     open fun notifyEnable(): Boolean {
         return true
     }
 
     /**
-     * 振动 开关，仅能控制Android O以下系统
+     * 通知振动 开关，仅能控制Android O以下系统
      */
-    open fun vibrateEnable(): Boolean {
+    open fun notifyVibrateEnable(): Boolean {
         return true
     }
 
     /**
-     * 响铃/提示音 开关，仅能控制Android O以下系统
+     * 通知响铃/提示音 开关，仅能控制Android O以下系统
      */
-    open fun soundEnable(): Boolean {
+    open fun notifySoundEnable(): Boolean {
         return true
     }
 }

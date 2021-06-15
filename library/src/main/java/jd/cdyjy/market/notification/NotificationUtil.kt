@@ -21,13 +21,21 @@ import android.app.PendingIntent
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.media.AudioAttributes
+import android.media.Ringtone
+import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import java.lang.ref.SoftReference
 
 /**
  * Simplifies common [Notification] tasks.
  */
 object NotificationUtil {
+
+    private val ringtoneMap: MutableMap<String, SoftReference<Ringtone>> = mutableMapOf()
 
     /**
      * create NotificationChannel and return channelId.
@@ -95,5 +103,53 @@ object NotificationUtil {
      */
     fun getSoundUri(context: Context, rawResId: Int): Uri {
         return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.packageName + "/" + rawResId)
+    }
+
+    /**
+     * 振动
+     * @param pattern an array of longs of times for which to turn the vibrator on or off.
+     * @param repeat  the index into pattern at which to repeat, or -1 if
+     *                you don't want to repeat.
+     */
+    fun vibrate(context: Context, pattern: LongArray, repeat: Int = -1) {
+        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+        if (vibrator != null) {
+            //在安卓10进行适配 安卓10进桌面、锁屏无法震动 ，报错 VibratorService: Ignoring incoming vibration as process with。。。
+            //参考 这个链接 https://stackoverflow.com/questions/57893054/vibration-on-widget-click-not-working-since-api-29
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val audioAttributes = AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_ALARM) //key
+                    .build()
+                val ve = VibrationEffect.createWaveform(pattern, repeat)
+                vibrator.vibrate(ve, audioAttributes)
+            } else {
+                vibrator.vibrate(pattern, repeat)
+            }
+        }
+    }
+
+    /**
+     * 播放提示音
+     */
+    fun playSound(context: Context, rawResId: Int) {
+        playSound(context, getSoundUri(context, rawResId))
+    }
+
+    /**
+     * 播放提示音
+     */
+    fun playSound(context: Context, soundUri: Uri) {
+        val ringtone = ringtoneMap[soundUri.toString()]?.get()
+        if (ringtone != null) {
+            if (ringtone.isPlaying) {
+                return
+            }
+            ringtone.play()
+        } else {
+            val rt = RingtoneManager.getRingtone(context, soundUri)
+            rt?.play()
+            ringtoneMap[soundUri.toString()] = SoftReference(rt)
+        }
     }
 }
