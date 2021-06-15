@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import jd.cdyjy.market.notification.BadgeUtils
 import jd.cdyjy.market.notification.NotificationContent
 import jd.cdyjy.market.notification.Notifications
 
@@ -14,8 +15,11 @@ class MainActivity : AppCompatActivity() {
 
         Notifications.setNotifier(SimpleNotifier(), TestRule())
 
+        var count: Int = 1
         findViewById<View>(R.id.button).setOnClickListener {
             Notifications.notify(this, NotificationContent("xxx", "yyy", mapOf()))
+            BadgeUtils.setBadgeCount(this, count)
+            count++
         }
 
         findViewById<View>(R.id.settings).setOnClickListener {

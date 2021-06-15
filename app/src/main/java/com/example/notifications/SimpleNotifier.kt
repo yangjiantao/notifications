@@ -8,10 +8,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import jd.cdyjy.market.notification.BaseNotifier
-import jd.cdyjy.market.notification.NotificationChannelConfig
-import jd.cdyjy.market.notification.NotificationContent
-import jd.cdyjy.market.notification.NotificationUtil
+import jd.cdyjy.market.notification.*
 
 
 /**
@@ -37,6 +34,7 @@ class SimpleNotifier : BaseNotifier() {
             .setNumber(1)
             .setAutoCancel(true)
             .setSmallIcon(android.R.drawable.ic_notification_clear_all)
+//            .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
             .setContentIntent(NotificationUtil.generateOpenAppIntent(context))
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .build()
@@ -48,8 +46,8 @@ class SimpleNotifier : BaseNotifier() {
         content: NotificationContent
     ): NotificationChannel? {
         val config = NotificationChannelConfig(
-            "xxx23",
-            "聊天消息3",
+            "id:3",
+            "聊天消息-角标true-type",
             "测试",
             NotificationManager.IMPORTANCE_HIGH
         )
@@ -71,6 +69,10 @@ class SimpleNotifier : BaseNotifier() {
             notificationManager.createNotificationChannel(notificationChannel)
             notificationChannel
         } else null
+    }
+
+    override fun beforeNotify(notification: Notification, content: NotificationContent) {
+        BadgeUtils.setBadgeOfMIUI(notification, 1)
     }
 
     override fun getCustomSoundUri(context: Context): Uri {

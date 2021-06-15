@@ -71,8 +71,18 @@ abstract class BaseNotifier {
         // 检查提示音和振动配置
         checkSoundAndVibrate(context, notification)
 
+        // 创建通知前回调
+        beforeNotify(notification, content)
+
         // 3. notify
         notificationManager!!.notify(generateNotifyId(content), notification)
+    }
+
+    /**
+     * 创建通知前回调
+     * 应用场景：小米系统设置应用角标-未读数、其它
+     */
+    open fun beforeNotify(notification: Notification, content: NotificationContent) {
     }
 
     /**
