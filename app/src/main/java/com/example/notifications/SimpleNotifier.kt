@@ -75,4 +75,8 @@ class SimpleNotifier : BaseNotifier() {
     override fun getCustomSoundUri(context: Context): Uri {
         return NotificationUtil.getSoundUri(context, R.raw.dongdong)
     }
+
+    override fun getVibratePattern(): LongArray {
+        return longArrayOf(100, 500, 200, 50)
+    }
 }

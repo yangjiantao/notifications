@@ -16,6 +16,11 @@ import androidx.core.app.NotificationManagerCompat
  */
 abstract class BaseNotifier {
 
+    companion object {
+        private const val TAG = "BaseNotifier"
+        private val DEFAULT_VIBRATE_PATTERN: LongArray = longArrayOf(200, 200, 200, 200)
+    }
+
     private var notifyRule: BaseNotifyRule = BaseNotifyRule()
     private var notificationManager: NotificationManagerCompat? = null
 
@@ -46,8 +51,17 @@ abstract class BaseNotifier {
         if (notifyRule.notifyEnable()) {
             // 允许发送通知
             generateNotification(context, content)
-        }
+        } else if (notifyRule.vibrateOrSoundWithoutNotification()) {
+            // 仅振动或播放声音来提醒用户
+            val customSoundUri = getCustomSoundUri(context)
+            if (customSoundUri != null && notifyRule.soundEnable()) {
+                NotificationUtil.playSound(context, customSoundUri)
+            }
 
+            if (notifyRule.vibrateEnable()) {
+                NotificationUtil.vibrate(context, getVibratePattern() ?: DEFAULT_VIBRATE_PATTERN)
+            }
+        }
         return true
     }
 
@@ -78,12 +92,6 @@ abstract class BaseNotifier {
         notificationManager!!.notify(generateNotifyId(content), notification)
     }
 
-    /**
-     * 创建通知前回调
-     * 应用场景：小米系统设置应用角标-未读数、其它
-     */
-    open fun beforeNotify(notification: Notification, content: NotificationContent) {
-    }
 
     /**
      * Android 8.0以下系统可以动态控制通知的声音和振动，8.0及以上，创建通知渠道后，就无法更改通知行为，此时用户拥有完全控制权。
@@ -93,7 +101,7 @@ abstract class BaseNotifier {
         notification: Notification
     ) {
         // check sound uri
-        if (notifyRule.notifySoundEnable()) {
+        if (notifyRule.soundEnable()) {
             val customSoundUri = getCustomSoundUri(context)
             if (customSoundUri != null) {
                 notification.sound = customSoundUri
@@ -111,19 +119,44 @@ abstract class BaseNotifier {
         }
 
         // check vibrate
-        if (notifyRule.notifyVibrateEnable()) {
-            notification.defaults =
-                notification.defaults or NotificationCompat.DEFAULT_VIBRATE
+        if (notifyRule.vibrateEnable()) {
+            val vibratePattern = getVibratePattern()
+            if (vibratePattern != null) {
+                notification.vibrate = vibratePattern
+                notification.defaults =
+                    notification.defaults and NotificationCompat.DEFAULT_VIBRATE.inv()
+            }else{
+                // use default vibrate
+                notification.defaults =
+                    notification.defaults or NotificationCompat.DEFAULT_VIBRATE
+            }
         } else {
+            notification.vibrate = null
             notification.defaults =
                 notification.defaults and NotificationCompat.DEFAULT_VIBRATE.inv()
         }
     }
 
     /**
+     * 创建通知前回调
+     * 应用场景：小米系统设置应用角标-未读数、其它
+     */
+    open fun beforeNotify(notification: Notification, content: NotificationContent) {
+    }
+
+    /**
      * 提示音资源
      */
     open fun getCustomSoundUri(context: Context): Uri? {
+        return null
+    }
+
+
+    /**
+     * @return an array of longs of times for which to turn the vibrator on or off.
+     * @see {@link android.os.Vibrator.vibrate}
+     */
+    open fun getVibratePattern(): LongArray? {
         return null
     }
 
@@ -148,9 +181,5 @@ abstract class BaseNotifier {
 
     internal fun setRule(rule: BaseNotifyRule) {
         notifyRule = rule
-    }
-
-    companion object {
-        private const val TAG = "BaseNotifier"
     }
 }
