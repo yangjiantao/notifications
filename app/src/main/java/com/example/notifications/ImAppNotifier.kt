@@ -10,18 +10,15 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import jd.cdyjy.market.notification.*
 
-
 /**
- * 普通应用通知，简单的Notifier实现类
- * 1. 自定义通知内容及样式，用法请参考官方API
- * 2. Android O以下可配置Rule来控制提示音和振动开关，Android O及其更高系统，则在通知渠道创建后交由用户控制。
- * Created by Jiantao.Yang on 2021/6/1
+ * 即时通讯类App通知实现
+ * Created by Jiantao.Yang on 2021/6/17
  */
-class SimpleNotifier : BaseNotifier() {
+class ImAppNotifier : BaseNotifier() {
 
     override fun generateNotifyId(content: NotificationContent): Int {
-        // always 1
-        return 1
+        // 可以会话为单位生成不同的通知ID
+        return content.hashCode() % 2
     }
 
     override fun createNotificationInstance(
@@ -29,8 +26,8 @@ class SimpleNotifier : BaseNotifier() {
         builder: NotificationCompat.Builder,
         content: NotificationContent
     ): Notification {
-        return builder.setContentTitle("测试通知消息")
-            .setContentText("消息内容")
+        return builder.setContentTitle("年会抽奖")
+            .setContentText("小红：好大的红包啊")
             .setNumber(1)
             .setAutoCancel(true)
             .setSmallIcon(android.R.drawable.ic_notification_clear_all)
@@ -46,8 +43,8 @@ class SimpleNotifier : BaseNotifier() {
         content: NotificationContent
     ): NotificationChannel? {
         val config = NotificationChannelConfig(
-            "id:3",
-            "促销消息",
+            "id:im",
+            "聊天消息",
             "测试",
             NotificationManager.IMPORTANCE_HIGH
         )
@@ -71,6 +68,13 @@ class SimpleNotifier : BaseNotifier() {
         } else null
     }
 
+
+    /**
+     * 同步小米系统桌面未读数角标
+     */
+    override fun beforeNotify(notification: Notification, content: NotificationContent) {
+        BadgeUtils.setBadgeOfMIUI(notification, 1)
+    }
 
     override fun getCustomSoundUri(context: Context): Uri {
         return NotificationUtil.getSoundUri(context, R.raw.dongdong)

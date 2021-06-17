@@ -10,9 +10,9 @@ open class BaseNotifyRule {
      * 通知功能状态，默认返回开启通知。
      * 关闭场景：用户手动关掉通知
      */
-    open fun enableAll(): Boolean {
-        return true
-    }
+//    open fun enableAll(): Boolean {
+//        return true
+//    }
 
     /**
      * 通知提醒开关

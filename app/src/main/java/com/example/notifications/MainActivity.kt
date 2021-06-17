@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         var count: Int = 1
         findViewById<View>(R.id.button).setOnClickListener {
             Notifications.notify(this, NotificationContent("xxx", "yyy", mapOf()))
-            BadgeUtils.setBadgeCount(this, count)
             count++
         }
 
