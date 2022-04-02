@@ -1,6 +1,6 @@
 package com.example.notifications
 
-import jd.cdyjy.market.notification.BaseNotifyRule
+import fast.build.util.notification.BaseNotifyRule
 
 /**
  * Created by Jiantao.Yang on 2021/6/15

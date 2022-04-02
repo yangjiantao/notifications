@@ -1,4 +1,4 @@
-package jd.cdyjy.market.notification
+package fast.build.util.notification
 
 /**
  * Created by Jiantao.Yang on 2021/5/31

@@ -1,4 +1,4 @@
-package jd.cdyjy.market.notification
+package fast.build.util.notification
 
 /**
  * 通知提示规则，包括：功能状态、响铃和振动频率、特定通知状态（免打扰）等

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jd.cdyjy.market.notification
+package fast.build.util.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

@@ -4,9 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import jd.cdyjy.market.notification.BadgeUtils
-import jd.cdyjy.market.notification.NotificationContent
-import jd.cdyjy.market.notification.Notifications
+import fast.build.util.notification.BadgeUtils
+import fast.build.util.notification.NotificationContent
+import fast.build.util.notification.Notifications
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

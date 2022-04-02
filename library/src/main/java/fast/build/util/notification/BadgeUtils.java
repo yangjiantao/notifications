@@ -1,4 +1,4 @@
-package jd.cdyjy.market.notification;
+package fast.build.util.notification;
 
 import android.app.Notification;
 import android.content.ComponentName;

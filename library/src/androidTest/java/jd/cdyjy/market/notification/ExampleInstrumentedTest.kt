@@ -1,4 +1,4 @@
-package jd.cdyjy.market.notification
+package fast.build.util.notification
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("jd.cdyjy.market.notification.test", appContext.packageName)
+        assertEquals("fast.build.util.notification.test", appContext.packageName)
     }
 }

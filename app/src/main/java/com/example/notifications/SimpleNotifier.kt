@@ -8,7 +8,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import jd.cdyjy.market.notification.*
+import fast.build.util.notification.*
 
 
 /**
